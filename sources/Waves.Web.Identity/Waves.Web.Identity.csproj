@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../../build/props/common.props" />
+
+    <PropertyGroup>
+        <Title>Waves.Web.Identity</Title>
+        <Authors>Egor Khindikaynen</Authors>
+        <Description></Description>
+        <Copyright>Copyright (c) 2020-2022 Egor Khindikaynen</Copyright>
+        <PackageProjectUrl>https://github.com/waves-framework/waves.web</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/waves-framework/waves.web</RepositoryUrl>
+        <PackageTags>waves web framework</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="1.25.2" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Waves.Web.Configuration\Waves.Web.Configuration.csproj" />
+      <ProjectReference Include="..\Waves.Web.Scheduling\Waves.Web.Scheduling.csproj" />
+    </ItemGroup>
+
+</Project>
