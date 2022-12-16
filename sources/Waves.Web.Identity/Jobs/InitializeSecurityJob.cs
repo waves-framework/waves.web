@@ -38,13 +38,13 @@ public class InitializeSecurityJob : BackgroundServiceJobBase
 
             Logger.LogInformation("Role update started");
 
-            var manager = scope.ServiceProvider.GetRequiredService<RoleManager<UserRoleDbEntity>>();
+            var manager = scope.ServiceProvider.GetRequiredService<RoleManager<UserRoleEntity>>();
 
             foreach (var role in Roles.Get())
             {
                 try
                 {
-                    var result = await manager.CreateAsync(new UserRoleDbEntity(role));
+                    var result = await manager.CreateAsync(new UserRoleEntity(role));
                     if (result.Succeeded)
                     {
                         continue;

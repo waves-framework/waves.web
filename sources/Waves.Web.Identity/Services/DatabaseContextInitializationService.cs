@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Waves.Web.Identity.Entities.DbEntities;
 using Waves.Web.Identity.Services.Interfaces;
 
 namespace Waves.Web.Identity.Services;
@@ -11,12 +12,17 @@ namespace Waves.Web.Identity.Services;
 /// <summary>
 /// Database initialization service.
 /// </summary>
-/// <typeparam name="T">Type of database context.</typeparam>
-public class DatabaseContextInitializationService<T> : IDatabaseContextInitializationService
-    where T : WavesIdentityDatabaseContext<T>
+/// <typeparam name="TContext">Context type.</typeparam>
+/// <typeparam name="TUser">Type of user.</typeparam>
+/// <typeparam name="TRole">Type of role.</typeparam>
+public class DatabaseContextInitializationService<TContext, TUser, TRole>
+    : IDatabaseContextInitializationService
+    where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
+    where TUser : UserEntity
+    where TRole : UserRoleEntity
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<DatabaseContextInitializationService<T>> _logger;
+    private readonly ILogger<DatabaseContextInitializationService<TContext, TUser, TRole>> _logger;
 
     /// <summary>
     /// Database initialization service.
@@ -25,7 +31,7 @@ public class DatabaseContextInitializationService<T> : IDatabaseContextInitializ
     /// <param name="logger">Logger.</param>
     public DatabaseContextInitializationService(
         IServiceProvider serviceProvider,
-        ILogger<DatabaseContextInitializationService<T>> logger)
+        ILogger<DatabaseContextInitializationService<TContext, TUser, TRole>> logger)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
@@ -42,7 +48,7 @@ public class DatabaseContextInitializationService<T> : IDatabaseContextInitializ
         try
         {
             using var scope = _serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<T>();
+            var context = scope.ServiceProvider.GetRequiredService<TContext>();
             var migrations = (await context.Database.GetPendingMigrationsAsync()).ToList();
 
             if (migrations.Any())

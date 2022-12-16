@@ -24,8 +24,8 @@ namespace Waves.Web.Identity.Mappings
         private void CreateUserMaps()
         {
             CreateMap<UserRegistrationInputApiEntity, UserRegistrationDto>().ReverseMap();
-            CreateMap<UserRegistrationDto, UserDbEntity>().ReverseMap();
-            CreateMap<UserDbEntity, UserDto>().ReverseMap();
+            CreateMap<UserRegistrationDto, UserEntity>().ReverseMap();
+            CreateMap<UserEntity, UserDto>().ReverseMap();
             CreateMap<UserDto, UserRegistrationOutputApiEntity>().ReverseMap();
             CreateMap<UserLoginInputApiEntity, UserLoginDto>().ReverseMap();
             CreateMap<UserDto, UserLoginOutputApiEntity>().ReverseMap();

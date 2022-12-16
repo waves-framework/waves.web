@@ -10,7 +10,7 @@ public class ConfigurationRootEntity
     /// <summary>
     /// Gets or sets logging.
     /// </summary>
-    public LoggingEntity Logging { get; set; }
+    public LoggingOptions Logging { get; set; }
 
     /// <summary>
     /// Gets or sets connection string dictionary.

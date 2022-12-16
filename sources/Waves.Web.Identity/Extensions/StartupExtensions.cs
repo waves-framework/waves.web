@@ -27,25 +27,29 @@ public static class StartupExtensions
     /// </summary>
     /// <param name="services">Service collection.</param>
     /// <param name="configuration">Configuration.</param>
-    /// <typeparam name="T">Type of database context.</typeparam>
+    /// <typeparam name="TContext">Context type.</typeparam>
+    /// <typeparam name="TUser">Type of user.</typeparam>
+    /// <typeparam name="TRole">Type of role.</typeparam>
     /// <returns>Returns service collection.</returns>
-    public static IServiceCollection AddIdentityServices<T>(
+    public static IServiceCollection AddIdentityServices<TContext, TUser, TRole>(
         this IServiceCollection services,
         IConfiguration configuration)
-        where T : WavesIdentityDatabaseContext<T>
+        where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
+        where TUser : UserEntity
+        where TRole : UserRoleEntity
     {
         // scopes
-        services.AddScoped<IUserService, UserService<T>>();
+        services.AddScoped<IUserService, UserService<TContext, TUser, TRole>>();
         services.AddScoped<ITokenService, TokenService>();
 
         // singletons
-        services.AddSingleton<IDatabaseContextInitializationService, DatabaseContextInitializationService<T>>();
+        services.AddSingleton<IDatabaseContextInitializationService, DatabaseContextInitializationService<TContext, TUser, TRole>>();
         services.AddSingleton<IConfigurationService, ConfigurationService>();
 
         // background jobs
         services.AddHostedService<InitializeSecurityJob>();
         services.AddHostedService<InitializeDatabaseJob>();
-        services.AddHostedService<InitializeAdminUserJob<T>>();
+        services.AddHostedService<InitializeAdminUserJob<TContext, TUser, TRole>>();
 
         return services;
     }
@@ -55,18 +59,22 @@ public static class StartupExtensions
     /// </summary>
     /// <param name="services">Service collection.</param>
     /// <param name="configuration">Configuration.</param>
-    /// <typeparam name="T">Type of database context.</typeparam>
-    public static void InitializeDatabase<T>(this IServiceCollection services, IConfiguration configuration)
-        where T : WavesIdentityDatabaseContext<T>
+    /// <typeparam name="TContext">Context type.</typeparam>
+    /// <typeparam name="TUser">Type of user.</typeparam>
+    /// <typeparam name="TRole">Type of role.</typeparam>
+    public static void InitializeDatabase<TContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
+        where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
+        where TUser : UserEntity
+        where TRole : UserRoleEntity
     {
-        services.AddDefaultIdentity<UserDbEntity>()
-            .AddRoles<UserRoleDbEntity>()
-            .AddUserManager<UserManager<UserDbEntity>>()
-            .AddRoleManager<RoleManager<UserRoleDbEntity>>()
-            .AddEntityFrameworkStores<T>();
+        services.AddDefaultIdentity<UserEntity>()
+            .AddRoles<UserRoleEntity>()
+            .AddUserManager<UserManager<UserEntity>>()
+            .AddRoleManager<RoleManager<UserRoleEntity>>()
+            .AddEntityFrameworkStores<TContext>();
 
         services.AddEntityFrameworkNpgsql()
-            .AddDbContextPool<T>(options =>
+            .AddDbContextPool<TContext>(options =>
             {
                 var userName = configuration
                     .GetSection("Credentials")
@@ -91,7 +99,7 @@ public static class StartupExtensions
 
                 options.UseNpgsql(
                     connectionString,
-                    optionsBuilder => { });
+                    _ => { });
             });
     }
 

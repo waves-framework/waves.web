@@ -7,16 +7,20 @@ namespace Waves.Web.Identity;
 /// <summary>
 /// Identity database context.
 /// </summary>
-/// <typeparam name="T">Type of database context.</typeparam>
-public abstract class WavesIdentityDatabaseContext<T> :
-    IdentityDbContext<UserDbEntity, UserRoleDbEntity, int>
-    where T : WavesIdentityDatabaseContext<T>
+/// <typeparam name="TContext">Context type.</typeparam>
+/// <typeparam name="TUser">Type of user.</typeparam>
+/// <typeparam name="TRole">Type of role.</typeparam>
+public abstract class WavesIdentityDatabaseContext<TContext, TUser, TRole> :
+    IdentityDbContext<UserEntity, UserRoleEntity, int>
+    where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
+    where TUser : UserEntity
+    where TRole : UserRoleEntity
 {
     /// <summary>
     /// Creates new instance of <see cref="T"/>.
     /// </summary>
     /// <param name="options">Options.</param>
-    protected WavesIdentityDatabaseContext(DbContextOptions<T> options)
+    protected WavesIdentityDatabaseContext(DbContextOptions<TContext> options)
         : base(options)
     {
     }
