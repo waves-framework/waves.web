@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Waves.Web.Configuration.Entities;
+using Waves.Web.Configuration.Options;
 
 namespace Waves.Web.Configuration.Services.Interfaces;
 
@@ -9,31 +9,38 @@ namespace Waves.Web.Configuration.Services.Interfaces;
 public interface IConfigurationService
 {
     /// <summary>
+    /// Gets authentication options.
+    /// </summary>
+    /// <returns>Returns options.</returns>
+    AuthenticationOptions GetAuthentication();
+
+    /// <summary>
     /// Gets login / password.
     /// </summary>
     /// <param name="name">Service name.</param>
     /// <returns>Returns token.</returns>
-    Credential GetCredentialEntity(string name);
+    CredentialOption GetCredential(string name);
 
     /// <summary>
     /// Gets token.
     /// </summary>
     /// <param name="name">Service name.</param>
     /// <returns>Returns token.</returns>
-    Authentication GetAuthenticationEntity(string name);
+    SecretOption GetSecret(string name);
 
     /// <summary>
     /// Gets connection string.
     /// </summary>
     /// <param name="name">Service name.</param>
     /// <returns>Returns connection string.</returns>
-    string GetUrl(string name);
+    string GetConnectionUrl(string name);
 
     /// <summary>
-    /// Gets token secret.
+    /// Gets setting.
     /// </summary>
-    /// <returns>Returns token secret.</returns>
-    string GetTokenSecret();
+    /// <param name="name">Setting name.</param>
+    /// <returns>Returns setting value.</returns>
+    string GetSetting(string name);
 
     /// <summary>
     /// Saves configuration.

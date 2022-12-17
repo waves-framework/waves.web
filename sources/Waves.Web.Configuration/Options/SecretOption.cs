@@ -1,9 +1,9 @@
-namespace Waves.Web.Configuration.Entities;
+namespace Waves.Web.Configuration.Options;
 
 /// <summary>
 /// Authentication entity.
 /// </summary>
-public class Authentication
+public class SecretOption
 {
     /// <summary>
     /// Gets or sets token.

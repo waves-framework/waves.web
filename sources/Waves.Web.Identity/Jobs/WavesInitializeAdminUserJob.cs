@@ -18,21 +18,21 @@ namespace Waves.Web.Identity.Jobs;
 /// <typeparam name="TContext">Context type.</typeparam>
 /// <typeparam name="TUser">Type of user.</typeparam>
 /// <typeparam name="TRole">Type of role.</typeparam>
-public class InitializeAdminUserJob<TContext, TUser, TRole> : BackgroundServiceJobBase
+public class WavesInitializeAdminUserJob<TContext, TUser, TRole> : BackgroundServiceJobBase
     where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
-    where TUser : UserEntity
-    where TRole : UserRoleEntity
+    where TUser : WavesUserEntity
+    where TRole : WavesUserRoleEntity
 {
     private readonly IConfigurationService _configurationService;
 
     /// <summary>
-    /// Creates new instance of <see cref="InitializeAdminUserJob{T}"/>.
+    /// Creates new instance of <see cref="WavesInitializeAdminUserJob{TContext,TUser,TRole}"/>.
     /// </summary>
     /// <param name="logger">Logger.</param>
     /// <param name="serviceProvider">Service provider.</param>
     /// <param name="configurationService">Configuration.</param>
-    public InitializeAdminUserJob(
-        ILogger<InitializeAdminUserJob<TContext, TUser, TRole>> logger,
+    public WavesInitializeAdminUserJob(
+        ILogger<WavesInitializeAdminUserJob<TContext, TUser, TRole>> logger,
         IServiceProvider serviceProvider,
         IConfigurationService configurationService)
         : base(logger, serviceProvider)
@@ -55,10 +55,10 @@ public class InitializeAdminUserJob<TContext, TUser, TRole> : BackgroundServiceJ
             var context = scope.ServiceProvider.GetRequiredService<TContext>();
             var users = context.Users;
 
-            var adminCredentials = _configurationService.GetCredentialEntity("Admin");
+            var adminCredentials = _configurationService.GetCredential("Admin");
             if (adminCredentials != null)
             {
-                var admin = new UserEntity(
+                var admin = new WavesUserEntity(
                     adminCredentials.Username,
                     adminCredentials.Username + "@waves-framework.io",
                     adminCredentials.Password.ToSha256(),

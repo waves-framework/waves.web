@@ -30,7 +30,7 @@ public static class DatabaseInitializationTools
         }
 
         var delaySpan = TimeSpan.FromSeconds(delay);
-        var contextInitializationService = scope.ServiceProvider.GetService<IDatabaseContextInitializationService>();
+        var contextInitializationService = scope.ServiceProvider.GetService<IWavesIdentityDatabaseContextInitializationService>();
         do
         {
             logger.LogWarning("Background service {Job} waits until the database initialization is completed", nameof(job));

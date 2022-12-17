@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Waves.Web.Configuration.Entities;
 using Waves.Web.Configuration.Options;
 using Waves.Web.Configuration.Services.Interfaces;
 
@@ -16,7 +14,6 @@ namespace Waves.Web.Configuration.Services;
 /// </summary>
 public class ConfigurationService : IConfigurationService
 {
-    private readonly IConfiguration _configuration;
     private readonly ILogger<ConfigurationService> _logger;
     private readonly ServiceOptions _options;
 
@@ -38,27 +35,33 @@ public class ConfigurationService : IConfigurationService
     }
 
     /// <inheritdoc />
-    public Credential GetCredentialEntity(string name)
+    public AuthenticationOptions GetAuthentication()
+    {
+        return _options.Authentication;
+    }
+
+    /// <inheritdoc />
+    public CredentialOption GetCredential(string name)
     {
         return _options.Credentials.FirstOrDefault(x => x.Key.Equals(name)).Value;
     }
 
     /// <inheritdoc />
-    public Authentication GetAuthenticationEntity(string name)
+    public SecretOption GetSecret(string name)
     {
-        return _options.Authentication.FirstOrDefault(x => x.Key.Equals(name)).Value;
+        return _options.Secrets.FirstOrDefault(x => x.Key.Equals(name)).Value;
     }
 
     /// <inheritdoc />
-    public string GetUrl(string name)
+    public string GetConnectionUrl(string name)
     {
         return _options.Urls.FirstOrDefault(x => x.Key.Equals(name)).Value;
     }
 
     /// <inheritdoc />
-    public string GetTokenSecret()
+    public string GetSetting(string name)
     {
-        return _options.TokenSecret;
+        return _options.Settings.FirstOrDefault(x => x.Key.Equals(name)).Value;
     }
 
     /// <inheritdoc />

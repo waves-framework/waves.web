@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Waves.Web.Configuration.Options;
 using Waves.Web.Configuration.Services;
 using Waves.Web.Configuration.Services.Interfaces;
 using Waves.Web.Identity.Entities.DbEntities;
 using Waves.Web.Identity.Jobs;
-using Waves.Web.Identity.Security.Options;
 using Waves.Web.Identity.Services;
 using Waves.Web.Identity.Services.Interfaces;
 using Waves.Web.Identity.Tools;
@@ -35,21 +35,21 @@ public static class StartupExtensions
         this IServiceCollection services,
         IConfiguration configuration)
         where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
-        where TUser : UserEntity
-        where TRole : UserRoleEntity
+        where TUser : WavesUserEntity
+        where TRole : WavesUserRoleEntity
     {
         // scopes
-        services.AddScoped<IUserService, UserService<TContext, TUser, TRole>>();
-        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IWavesUserService, WavesUserService<TContext, TUser, TRole>>();
+        services.AddScoped<IWavesTokenService, WavesTokenService>();
 
         // singletons
-        services.AddSingleton<IDatabaseContextInitializationService, DatabaseContextInitializationService<TContext, TUser, TRole>>();
+        services.AddSingleton<IWavesIdentityDatabaseContextInitializationService, WavesIdentityDatabaseContextInitializationService<TContext, TUser, TRole>>();
         services.AddSingleton<IConfigurationService, ConfigurationService>();
 
         // background jobs
-        services.AddHostedService<InitializeSecurityJob>();
-        services.AddHostedService<InitializeDatabaseJob>();
-        services.AddHostedService<InitializeAdminUserJob<TContext, TUser, TRole>>();
+        services.AddHostedService<WavesInitializeSecurityJob>();
+        services.AddHostedService<WavesInitializeDatabaseJob>();
+        services.AddHostedService<WavesInitializeAdminUserJob<TContext, TUser, TRole>>();
 
         return services;
     }
@@ -64,13 +64,13 @@ public static class StartupExtensions
     /// <typeparam name="TRole">Type of role.</typeparam>
     public static void InitializeDatabase<TContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
         where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
-        where TUser : UserEntity
-        where TRole : UserRoleEntity
+        where TUser : WavesUserEntity
+        where TRole : WavesUserRoleEntity
     {
-        services.AddDefaultIdentity<UserEntity>()
-            .AddRoles<UserRoleEntity>()
-            .AddUserManager<UserManager<UserEntity>>()
-            .AddRoleManager<RoleManager<UserRoleEntity>>()
+        services.AddDefaultIdentity<WavesUserEntity>()
+            .AddRoles<WavesUserRoleEntity>()
+            .AddUserManager<UserManager<WavesUserEntity>>()
+            .AddRoleManager<RoleManager<WavesUserRoleEntity>>()
             .AddEntityFrameworkStores<TContext>();
 
         services.AddEntityFrameworkNpgsql()
@@ -110,7 +110,7 @@ public static class StartupExtensions
     /// <param name="configuration">Configuration.</param>
     public static void InitializeAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var securityKey = configuration.GetValue(Security.Constants.TokenSecretKey, "0000");
+        var options = configuration.Get<ServiceOptions>();
 
         services.AddAuthentication(x =>
             {
@@ -129,12 +129,12 @@ public static class StartupExtensions
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = AuthenticationOptions.Issuer,
+                    ValidIssuer = options.Authentication.Issuer,
                     ValidateAudience = true,
-                    ValidAudience = AuthenticationOptions.Audience,
+                    ValidAudience = options.Authentication.Audience,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(securityKey),
+                    IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(options.Authentication.TokenSecret),
                 };
             });
     }

@@ -11,15 +11,15 @@ namespace Waves.Web.Identity.Jobs;
 /// <summary>
 /// Initialize database job.
 /// </summary>
-public class InitializeDatabaseJob : BackgroundServiceJobBase
+public class WavesInitializeDatabaseJob : BackgroundServiceJobBase
 {
     /// <summary>
-    /// Creates new instance of <see cref="InitializeDatabaseJob"/>.
+    /// Creates new instance of <see cref="WavesInitializeDatabaseJob"/>.
     /// </summary>
     /// <param name="logger">Logger.</param>
     /// <param name="serviceProvider">Service provider.</param>
-    public InitializeDatabaseJob(
-        ILogger<InitializeDatabaseJob> logger,
+    public WavesInitializeDatabaseJob(
+        ILogger<WavesInitializeDatabaseJob> logger,
         IServiceProvider serviceProvider)
         : base(logger, serviceProvider)
     {
@@ -32,7 +32,7 @@ public class InitializeDatabaseJob : BackgroundServiceJobBase
         try
         {
             Logger.LogInformation("Database initialization started");
-            var initializationService = services.GetService<IDatabaseContextInitializationService>();
+            var initializationService = services.GetService<IWavesIdentityDatabaseContextInitializationService>();
             if (initializationService != null)
             {
                 await initializationService.InitializeDatabase();

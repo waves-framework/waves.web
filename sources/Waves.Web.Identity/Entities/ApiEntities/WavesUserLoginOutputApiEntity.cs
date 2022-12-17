@@ -1,9 +1,9 @@
 namespace Waves.Web.Identity.Entities.ApiEntities
 {
     /// <summary>
-    /// User registration API entity.
+    /// Out API model for user login.
     /// </summary>
-    public class UserRegistrationOutputApiEntity
+    public class WavesUserLoginOutputApiEntity
     {
         /// <summary>
         /// Gets or sets user id.
@@ -34,5 +34,10 @@ namespace Waves.Web.Identity.Entities.ApiEntities
         /// Gets or sets user role.
         /// </summary>
         public string Role { get; set; }
+
+        /// <summary>
+        /// Gets or sets user token.
+        /// </summary>
+        public string Token { get; set; }
     }
 }

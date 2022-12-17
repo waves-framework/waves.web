@@ -7,18 +7,18 @@ namespace Waves.Web.Identity.Entities.DbEntities
     /// <summary>
     /// User database entity.
     /// </summary>
-    public class UserEntity :
+    public class WavesUserEntity :
         IdentityUser<int>,
-        IEquatable<UserEntity>
+        IEquatable<WavesUserEntity>
     {
         /// <summary>
-        /// Creates new instance of <see cref="UserEntity"/>.
+        /// Creates new instance of <see cref="WavesUserEntity"/>.
         /// </summary>
         /// <param name="userName">User name.</param>
         /// <param name="email">Mail.</param>
         /// <param name="passwordHash">Password hash.</param>
         /// <param name="role">Role.</param>
-        public UserEntity(
+        public WavesUserEntity(
             string userName,
             string email,
             string passwordHash,
@@ -52,7 +52,7 @@ namespace Waves.Web.Identity.Entities.DbEntities
         public string? ImageUrl { get; set; }
 
         /// <inheritdoc />
-        public bool Equals(UserEntity? other)
+        public bool Equals(WavesUserEntity? other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -74,7 +74,7 @@ namespace Waves.Web.Identity.Entities.DbEntities
         public override bool Equals(object? obj)
         {
             return ReferenceEquals(this, obj)
-                   || (obj is UserEntity other && Equals(other));
+                   || (obj is WavesUserEntity other && Equals(other));
         }
 
         /// <inheritdoc />

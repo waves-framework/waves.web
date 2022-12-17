@@ -1,9 +1,9 @@
-namespace Waves.Web.Identity.Entities.DtoEntities
+namespace Waves.Web.Identity.Entities.ApiEntities
 {
     /// <summary>
-    /// User registration DTO.
+    /// User registration API entity.
     /// </summary>
-    public class UserRegistrationDto
+    public class WavesUserRegistrationOutputApiEntity
     {
         /// <summary>
         /// Gets or sets user id.
@@ -19,11 +19,6 @@ namespace Waves.Web.Identity.Entities.DtoEntities
         /// Gets or sets email.
         /// </summary>
         public string Email { get; set; }
-
-        /// <summary>
-        /// Get or sets password hash.
-        /// </summary>
-        public string PasswordHash { get; set; }
 
         /// <summary>
         /// Gets or sets first name.

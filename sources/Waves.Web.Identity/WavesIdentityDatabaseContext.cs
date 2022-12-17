@@ -11,10 +11,10 @@ namespace Waves.Web.Identity;
 /// <typeparam name="TUser">Type of user.</typeparam>
 /// <typeparam name="TRole">Type of role.</typeparam>
 public abstract class WavesIdentityDatabaseContext<TContext, TUser, TRole> :
-    IdentityDbContext<UserEntity, UserRoleEntity, int>
+    IdentityDbContext<WavesUserEntity, WavesUserRoleEntity, int>
     where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
-    where TUser : UserEntity
-    where TRole : UserRoleEntity
+    where TUser : WavesUserEntity
+    where TRole : WavesUserRoleEntity
 {
     /// <summary>
     /// Creates new instance of <see cref="T"/>.

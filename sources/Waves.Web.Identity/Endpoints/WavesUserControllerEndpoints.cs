@@ -3,7 +3,7 @@ namespace Waves.Web.Identity.Endpoints
     /// <summary>
     /// User controller endpoints.
     /// </summary>
-    public static class UserControllerEndpoints
+    public static class WavesUserControllerEndpoints
     {
         /// <summary>
         /// Gets authentication endpoint ID.

@@ -5,7 +5,7 @@ namespace Waves.Web.Identity.Services.Interfaces
     /// <summary>
     /// Interface for token service.
     /// </summary>
-    public interface ITokenService
+    public interface IWavesTokenService
     {
         /// <summary>
         /// Gets token for current user and role.

@@ -1,27 +1,32 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Waves.Web.Identity.Security.Options
+namespace Waves.Web.Configuration.Options
 {
     /// <summary>
     /// Authentication options.
     /// </summary>
-    public static class AuthenticationOptions
+    public class AuthenticationOptions
     {
         /// <summary>
         /// Gets issuer.
         /// </summary>
-        public const string Issuer = "WavesApiService";
+        public string Issuer { get; set; } = "WavesApiService";
 
         /// <summary>
         /// Gets audience.
         /// </summary>
-        public const string Audience = "WavesApiClient";
+        public string Audience { get; set; } = "WavesApiClient";
 
         /// <summary>
         /// Gets lifetime.
         /// </summary>
-        public const int Lifetime = 30;
+        public int Lifetime { get; set; } = 30;
+
+        /// <summary>
+        /// Gets token secret.
+        /// </summary>
+        public string TokenSecret { get; set; } = "0000000000000000";
 
         /// <summary>
         /// Gets symmetric security key.

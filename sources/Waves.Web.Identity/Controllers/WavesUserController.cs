@@ -15,26 +15,26 @@ namespace Waves.Web.Identity.Controllers;
 /// Users controller.
 /// </summary>
 [ApiController]
-[Route(BaseEndpoints.ControllerBaseUrl)]
-public abstract class UserController : BaseController
+[Route(WavesBaseEndpoints.ControllerBaseUrl)]
+public abstract class WavesUserController : WavesBaseController
 {
-    private readonly IUserService _userService;
-    private readonly ITokenService _tokenService;
+    private readonly IWavesUserService _userService;
+    private readonly IWavesTokenService _tokenService;
     private readonly IMapper _mapper;
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<WavesUserController> _logger;
 
     /// <summary>
-    /// Creates new instance of <see cref="UserController"/>.
+    /// Creates new instance of <see cref="WavesUserController"/>.
     /// </summary>
     /// <param name="userService">User service.</param>
     /// <param name="tokenService">Token service.</param>
     /// <param name="mapper">Mapper.</param>
     /// <param name="logger">Logger.</param>
-    protected UserController(
-        IUserService userService,
-        ITokenService tokenService,
+    protected WavesUserController(
+        IWavesUserService userService,
+        IWavesTokenService tokenService,
         IMapper mapper,
-        ILogger<UserController> logger)
+        ILogger<WavesUserController> logger)
     {
         _userService = userService;
         _tokenService = tokenService;
@@ -48,20 +48,20 @@ public abstract class UserController : BaseController
     /// <param name="userLoginApiEntity">User login API entity.</param>
     /// <returns>Must returns user token if success.</returns>
     [AllowAnonymous]
-    [HttpPost(UserControllerEndpoints.AuthenticationEndpoint)]
-    [ProducesResponseType(typeof(UserLoginOutputApiEntity), (int)HttpStatusCode.OK)]
+    [HttpPost(WavesUserControllerEndpoints.AuthenticationEndpoint)]
+    [ProducesResponseType(typeof(WavesUserLoginOutputApiEntity), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public virtual async Task<IActionResult> Authenticate([FromBody] UserLoginInputApiEntity userLoginApiEntity)
+    public virtual async Task<IActionResult> Authenticate([FromBody] WavesUserLoginInputApiEntity userLoginApiEntity)
     {
-        var loginDto = _mapper.Map<UserLoginDto>(userLoginApiEntity);
+        var loginDto = _mapper.Map<WavesUserLoginDto>(userLoginApiEntity);
         var user = await _userService.Authenticate(loginDto);
-        if (user.Equals(default(UserDto)))
+        if (user.Equals(default(WavesUserDto)))
         {
             return BadRequest(new { message = "Login or password is incorrect" });
         }
 
         var tokenString = await _tokenService.Get(user.Email, user.Role);
-        var result = _mapper.Map<UserLoginOutputApiEntity>(user);
+        var result = _mapper.Map<WavesUserLoginOutputApiEntity>(user);
         result.Token = tokenString;
 
         return Ok(result);
@@ -71,16 +71,16 @@ public abstract class UserController : BaseController
     /// Registers new user.
     /// </summary>
     /// <param name="registrationApiEntity">User.</param>
-    /// <returns>Must returns <see cref="UserDto"/> if success.</returns>
+    /// <returns>Must returns <see cref="WavesUserDto"/> if success.</returns>
     [AllowAnonymous]
-    [HttpPost(UserControllerEndpoints.RegistrationEndpoint)]
-    [ProducesResponseType(typeof(UserRegistrationOutputApiEntity), (int)HttpStatusCode.OK)]
+    [HttpPost(WavesUserControllerEndpoints.RegistrationEndpoint)]
+    [ProducesResponseType(typeof(WavesUserRegistrationOutputApiEntity), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public virtual async Task<IActionResult> Register([FromBody] UserRegistrationInputApiEntity registrationApiEntity)
+    public virtual async Task<IActionResult> Register([FromBody] WavesUserRegistrationInputApiEntity registrationApiEntity)
     {
-        var registrationDto = _mapper.Map<UserRegistrationDto>(registrationApiEntity);
+        var registrationDto = _mapper.Map<WavesUserRegistrationDto>(registrationApiEntity);
         var userDto = await _userService.Register(registrationDto);
-        var userApiEntity = _mapper.Map<UserRegistrationOutputApiEntity>(userDto);
+        var userApiEntity = _mapper.Map<WavesUserRegistrationOutputApiEntity>(userDto);
         return Ok(userApiEntity);
     }
 }

@@ -18,28 +18,28 @@ namespace Waves.Web.Identity.Services;
 /// <typeparam name="TContext">Context type.</typeparam>
 /// <typeparam name="TUser">Type of user.</typeparam>
 /// <typeparam name="TRole">Type of role.</typeparam>
-public class UserService<TContext, TUser, TRole> : IUserService
+public class WavesUserService<TContext, TUser, TRole> : IWavesUserService
     where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
-    where TUser : UserEntity
-    where TRole : UserRoleEntity
+    where TUser : WavesUserEntity
+    where TRole : WavesUserRoleEntity
 {
-    private readonly UserManager<UserEntity> _userManager;
+    private readonly UserManager<WavesUserEntity> _userManager;
     private readonly TContext _context;
     private readonly IMapper _mapper;
-    private readonly ILogger<UserService<TContext, TUser, TRole>> _logger;
+    private readonly ILogger<WavesUserService<TContext, TUser, TRole>> _logger;
 
     /// <summary>
-    /// Creates new instance of <see cref="UserService{T}"/>.
+    /// Creates new instance of <see cref="WavesUserService{TContext,TUser,TRole}"/>.
     /// </summary>
     /// <param name="userManager">User manager.</param>
     /// <param name="databaseContext">Database context.</param>
     /// <param name="mapper">Mapper.</param>
     /// <param name="logger">Logger.</param>
-    public UserService(
-        UserManager<UserEntity> userManager,
+    public WavesUserService(
+        UserManager<WavesUserEntity> userManager,
         TContext databaseContext,
         IMapper mapper,
-        ILogger<UserService<TContext, TUser, TRole>> logger)
+        ILogger<WavesUserService<TContext, TUser, TRole>> logger)
     {
         _userManager = userManager;
         _context = databaseContext;
@@ -48,7 +48,7 @@ public class UserService<TContext, TUser, TRole> : IUserService
     }
 
     /// <inheritdoc />
-    public async Task<UserDto> Register(UserRegistrationDto user)
+    public async Task<WavesUserDto> Register(WavesUserRegistrationDto user)
     {
         if (string.IsNullOrWhiteSpace(user.PasswordHash))
         {
@@ -60,16 +60,16 @@ public class UserService<TContext, TUser, TRole> : IUserService
             throw new ArgumentException("User with same login yet exist.");
         }
 
-        var entity = _mapper.Map<UserEntity>(user);
+        var entity = _mapper.Map<WavesUserEntity>(user);
 
         await _userManager.CreateAsync(entity);
         await _userManager.AddToRoleAsync(entity, user.Role);
 
-        return _mapper.Map<UserDto>(entity);
+        return _mapper.Map<WavesUserDto>(entity);
     }
 
     /// <inheritdoc />
-    public async Task<UserDto> Authenticate(UserLoginDto login)
+    public async Task<WavesUserDto> Authenticate(WavesUserLoginDto login)
     {
         if (string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.PasswordHash))
         {
@@ -89,20 +89,20 @@ public class UserService<TContext, TUser, TRole> : IUserService
             throw new AuthenticationException("Password is incorrect.");
         }
 
-        return _mapper.Map<UserDto>(user);
+        return _mapper.Map<WavesUserDto>(user);
     }
 
     /// <inheritdoc />
-    public async Task<UserDto?> Get(int id)
+    public async Task<WavesUserDto?> Get(int id)
     {
         var user = await _context.Users.SingleOrDefaultAsync(x => x.Id.Equals(id));
-        return user == null ? default : _mapper.Map<UserDto>(user);
+        return user == null ? default : _mapper.Map<WavesUserDto>(user);
     }
 
     /// <inheritdoc />
-    public async Task<UserDto?> Get(string email)
+    public async Task<WavesUserDto?> Get(string email)
     {
         var user = await _context.Users.SingleOrDefaultAsync(x => x.Email.Equals(email));
-        return user == null ? default : _mapper.Map<UserDto>(user);
+        return user == null ? default : _mapper.Map<WavesUserDto>(user);
     }
 }

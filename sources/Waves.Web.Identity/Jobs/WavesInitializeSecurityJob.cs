@@ -15,15 +15,15 @@ namespace Waves.Web.Identity.Jobs;
 /// <summary>
 /// Initialize security job.
 /// </summary>
-public class InitializeSecurityJob : BackgroundServiceJobBase
+public class WavesInitializeSecurityJob : BackgroundServiceJobBase
 {
     /// <summary>
-    /// Creates new instance of <see cref="InitializeSecurityJob"/>.
+    /// Creates new instance of <see cref="WavesInitializeSecurityJob"/>.
     /// </summary>
     /// <param name="logger">Logger.</param>
     /// <param name="serviceProvider">Service provider.</param>
-    public InitializeSecurityJob(
-        ILogger<InitializeSecurityJob> logger,
+    public WavesInitializeSecurityJob(
+        ILogger<WavesInitializeSecurityJob> logger,
         IServiceProvider serviceProvider)
         : base(logger, serviceProvider)
     {
@@ -38,13 +38,13 @@ public class InitializeSecurityJob : BackgroundServiceJobBase
 
             Logger.LogInformation("Role update started");
 
-            var manager = scope.ServiceProvider.GetRequiredService<RoleManager<UserRoleEntity>>();
+            var manager = scope.ServiceProvider.GetRequiredService<RoleManager<WavesUserRoleEntity>>();
 
             foreach (var role in Roles.Get())
             {
                 try
                 {
-                    var result = await manager.CreateAsync(new UserRoleEntity(role));
+                    var result = await manager.CreateAsync(new WavesUserRoleEntity(role));
                     if (result.Succeeded)
                     {
                         continue;

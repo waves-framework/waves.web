@@ -15,23 +15,23 @@ namespace Waves.Web.Identity.Services;
 /// <typeparam name="TContext">Context type.</typeparam>
 /// <typeparam name="TUser">Type of user.</typeparam>
 /// <typeparam name="TRole">Type of role.</typeparam>
-public class DatabaseContextInitializationService<TContext, TUser, TRole>
-    : IDatabaseContextInitializationService
+public class WavesIdentityDatabaseContextInitializationService<TContext, TUser, TRole>
+    : IWavesIdentityDatabaseContextInitializationService
     where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
-    where TUser : UserEntity
-    where TRole : UserRoleEntity
+    where TUser : WavesUserEntity
+    where TRole : WavesUserRoleEntity
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<DatabaseContextInitializationService<TContext, TUser, TRole>> _logger;
+    private readonly ILogger<WavesIdentityDatabaseContextInitializationService<TContext, TUser, TRole>> _logger;
 
     /// <summary>
     /// Database initialization service.
     /// </summary>
     /// <param name="serviceProvider">Service provider.</param>
     /// <param name="logger">Logger.</param>
-    public DatabaseContextInitializationService(
+    public WavesIdentityDatabaseContextInitializationService(
         IServiceProvider serviceProvider,
-        ILogger<DatabaseContextInitializationService<TContext, TUser, TRole>> logger)
+        ILogger<WavesIdentityDatabaseContextInitializationService<TContext, TUser, TRole>> logger)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;

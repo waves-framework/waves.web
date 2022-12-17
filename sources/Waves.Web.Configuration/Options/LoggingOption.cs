@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
-namespace Waves.Web.Configuration.Entities;
+namespace Waves.Web.Configuration.Options;
 
 /// <summary>
 /// Logging configuration entity.
 /// </summary>
-public class Logging
+public class LoggingOption
 {
     /// <summary>
     /// Gets or sets log level dictionary.

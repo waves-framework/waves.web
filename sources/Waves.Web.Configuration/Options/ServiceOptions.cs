@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Waves.Web.Configuration.Entities;
 
 namespace Waves.Web.Configuration.Options;
 
@@ -12,17 +11,22 @@ public class ServiceOptions
     /// <summary>
     /// Gets or sets logging.
     /// </summary>
-    public Logging Logging { get; set; }
+    public LoggingOption Logging { get; set; }
+
+    /// <summary>
+    /// Gets or sets authentication options.
+    /// </summary>
+    public AuthenticationOptions Authentication { get; set; } = new AuthenticationOptions();
 
     /// <summary>
     /// Gets or sets credentials.
     /// </summary>
-    public Dictionary<string, Credential> Credentials { get; set; }
+    public Dictionary<string, CredentialOption> Credentials { get; set; }
 
     /// <summary>
     /// Gets or sets authentication secrets.
     /// </summary>
-    public Dictionary<string, Authentication> Authentication { get; set; }
+    public Dictionary<string, SecretOption> Secrets { get; set; }
 
     /// <summary>
     /// Gets or sets urls.
@@ -33,9 +37,4 @@ public class ServiceOptions
     /// Gets or sets urls.
     /// </summary>
     public Dictionary<string, string> Settings { get; set; }
-
-    /// <summary>
-    /// Gets or sets token secret.
-    /// </summary>
-    public string TokenSecret { get; set; }
 }

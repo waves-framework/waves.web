@@ -5,7 +5,7 @@ namespace Waves.Web.Identity.Services.Interfaces;
 /// <summary>
 /// Database initialize service.
 /// </summary>
-public interface IDatabaseContextInitializationService
+public interface IWavesIdentityDatabaseContextInitializationService
 {
     /// <summary>
     /// Gets whether database is initialized.

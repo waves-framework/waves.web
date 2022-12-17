@@ -1,14 +1,14 @@
-namespace Waves.Web.Identity.Entities.ApiEntities
+namespace Waves.Web.Identity.Entities.DtoEntities
 {
     /// <summary>
-    /// Out API model for user login.
+    /// User dto.
     /// </summary>
-    public class UserLoginOutputApiEntity
+    public class WavesUserDto
     {
         /// <summary>
         /// Gets or sets user id.
         /// </summary>
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets username.
@@ -19,6 +19,11 @@ namespace Waves.Web.Identity.Entities.ApiEntities
         /// Gets or sets email.
         /// </summary>
         public string Email { get; set; }
+
+        /// <summary>
+        /// Get or sets password hash.
+        /// </summary>
+        public string PasswordHash { get; set; }
 
         /// <summary>
         /// Gets or sets first name.
@@ -35,9 +40,10 @@ namespace Waves.Web.Identity.Entities.ApiEntities
         /// </summary>
         public string Role { get; set; }
 
-        /// <summary>
-        /// Gets or sets user token.
-        /// </summary>
-        public string Token { get; set; }
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{Username} (email: {Email}, id: {Id}, role {Role})";
+        }
     }
 }

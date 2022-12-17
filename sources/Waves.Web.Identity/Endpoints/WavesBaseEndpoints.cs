@@ -3,7 +3,7 @@ namespace Waves.Web.Identity.Endpoints
     /// <summary>
     /// Endpoints constants.
     /// </summary>
-    public static class BaseEndpoints
+    public static class WavesBaseEndpoints
     {
         /// <summary>
         /// Gets controller base URL.

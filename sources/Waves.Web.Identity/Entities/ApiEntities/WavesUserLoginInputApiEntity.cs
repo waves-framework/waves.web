@@ -1,9 +1,9 @@
-namespace Waves.Web.Identity.Entities.DtoEntities
+namespace Waves.Web.Identity.Entities.ApiEntities
 {
     /// <summary>
-    /// User login DTO.
+    /// User login API input entity.
     /// </summary>
-    public class UserLoginDto
+    public class WavesUserLoginInputApiEntity
     {
         /// <summary>
         /// Gets or sets email.

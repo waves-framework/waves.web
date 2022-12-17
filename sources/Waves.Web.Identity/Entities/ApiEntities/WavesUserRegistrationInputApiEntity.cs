@@ -3,7 +3,7 @@ namespace Waves.Web.Identity.Entities.ApiEntities
     /// <summary>
     /// User registration input API entity.
     /// </summary>
-    public class UserRegistrationInputApiEntity
+    public class WavesUserRegistrationInputApiEntity
     {
         /// <summary>
         /// Gets or sets username.

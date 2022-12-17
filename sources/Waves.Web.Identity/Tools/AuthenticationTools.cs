@@ -22,11 +22,11 @@ namespace Waves.Web.Identity.Tools
             var userPrincipal = context.Principal;
             if (userPrincipal is { Identity: ClaimsIdentity userIdentity } && userIdentity.HasClaim(c => c.Type == userIdentity.RoleClaimType))
             {
-                var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                var userService = context.HttpContext.RequestServices.GetRequiredService<IWavesUserService>();
                 if (userIdentity.Name != null)
                 {
                     var user = await userService.Get(userIdentity.Name);
-                    if (user.Equals(default(UserDto)))
+                    if (user.Equals(default(WavesUserDto)))
                     {
                         context.Fail("Unauthorized access.");
                         return;

@@ -7,7 +7,7 @@ namespace Waves.Web.Identity.Controllers;
 /// <summary>
 /// Base controller.
 /// </summary>
-public abstract class BaseController : ControllerBase
+public abstract class WavesBaseController : ControllerBase
 {
     /// <summary>
     /// Tries to get user ID.

@@ -1,14 +1,14 @@
 namespace Waves.Web.Identity.Entities.DtoEntities
 {
     /// <summary>
-    /// User dto.
+    /// User registration DTO.
     /// </summary>
-    public class UserDto
+    public class WavesUserRegistrationDto
     {
         /// <summary>
         /// Gets or sets user id.
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets username.
@@ -39,11 +39,5 @@ namespace Waves.Web.Identity.Entities.DtoEntities
         /// Gets or sets user role.
         /// </summary>
         public string Role { get; set; }
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{Username} (email: {Email}, id: {Id}, role {Role})";
-        }
     }
 }

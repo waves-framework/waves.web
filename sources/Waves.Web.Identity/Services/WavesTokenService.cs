@@ -4,8 +4,8 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using Waves.Web.Configuration.Options;
 using Waves.Web.Configuration.Services.Interfaces;
-using Waves.Web.Identity.Security.Options;
 using Waves.Web.Identity.Services.Interfaces;
 
 namespace Waves.Web.Identity.Services
@@ -13,21 +13,23 @@ namespace Waves.Web.Identity.Services
     /// <summary>
     /// Token service.
     /// </summary>
-    public class TokenService : ITokenService
+    public class WavesTokenService : IWavesTokenService
     {
         private readonly string _securityKey;
         private readonly JwtSecurityTokenHandler _tokenHandler;
         private readonly DateTimeOffset _tokenLifetime;
+        private readonly AuthenticationOptions _options;
 
         /// <summary>
-        /// Creates new instance of <see cref="TokenService"/>.
+        /// Creates new instance of <see cref="WavesTokenService"/>.
         /// </summary>
         /// <param name="configurationService">Configuration.</param>
-        public TokenService(IConfigurationService configurationService)
+        public WavesTokenService(IConfigurationService configurationService)
         {
+            _options = configurationService.GetAuthentication();
             _tokenHandler = new JwtSecurityTokenHandler();
-            _tokenLifetime = DateTime.UtcNow.AddDays(AuthenticationOptions.Lifetime);
-            _securityKey = configurationService.GetTokenSecret();
+            _tokenLifetime = DateTime.UtcNow.AddDays(_options.Lifetime);
+            _securityKey = _options.TokenSecret;
         }
 
         /// <inheritdoc />
@@ -45,8 +47,8 @@ namespace Waves.Web.Identity.Services
                     new Claim(ClaimTypes.Name, identifier),
                     new Claim(ClaimTypes.Role, role),
                 }),
-                Issuer = AuthenticationOptions.Issuer,
-                Audience = AuthenticationOptions.Audience,
+                Issuer = _options.Issuer,
+                Audience = _options.Audience,
                 Expires = _tokenLifetime.DateTime,
                 SigningCredentials = new SigningCredentials(
                     AuthenticationOptions.GetSymmetricSecurityKey(_securityKey),
