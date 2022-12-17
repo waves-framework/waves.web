@@ -3,7 +3,7 @@ namespace Waves.Web.Configuration.Entities;
 /// <summary>
 /// Credential entity.
 /// </summary>
-public class CredentialEntity
+public class Credential
 {
     /// <summary>
     /// Gets or sets username.

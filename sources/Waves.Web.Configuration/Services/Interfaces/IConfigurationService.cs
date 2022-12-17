@@ -13,14 +13,14 @@ public interface IConfigurationService
     /// </summary>
     /// <param name="name">Service name.</param>
     /// <returns>Returns token.</returns>
-    CredentialEntity GetCredentialEntity(string name);
+    Credential GetCredentialEntity(string name);
 
     /// <summary>
     /// Gets token.
     /// </summary>
     /// <param name="name">Service name.</param>
     /// <returns>Returns token.</returns>
-    AuthenticationEntity GetAuthenticationEntity(string name);
+    Authentication GetAuthenticationEntity(string name);
 
     /// <summary>
     /// Gets connection string.

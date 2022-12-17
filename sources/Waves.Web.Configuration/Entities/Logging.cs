@@ -5,7 +5,7 @@ namespace Waves.Web.Configuration.Entities;
 /// <summary>
 /// Logging configuration entity.
 /// </summary>
-public class LoggingOptions
+public class Logging
 {
     /// <summary>
     /// Gets or sets log level dictionary.

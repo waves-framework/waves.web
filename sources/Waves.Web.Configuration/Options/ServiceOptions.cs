@@ -12,10 +12,30 @@ public class ServiceOptions
     /// <summary>
     /// Gets or sets logging.
     /// </summary>
-    public LoggingOptions Logging { get; set; }
+    public Logging Logging { get; set; }
 
     /// <summary>
     /// Gets or sets credentials.
     /// </summary>
-    public ICollection<CredentialEntity> Credentials { get; set; }
+    public Dictionary<string, Credential> Credentials { get; set; }
+
+    /// <summary>
+    /// Gets or sets authentication secrets.
+    /// </summary>
+    public Dictionary<string, Authentication> Authentication { get; set; }
+
+    /// <summary>
+    /// Gets or sets urls.
+    /// </summary>
+    public Dictionary<string, string> Urls { get; set; }
+
+    /// <summary>
+    /// Gets or sets urls.
+    /// </summary>
+    public Dictionary<string, string> Settings { get; set; }
+
+    /// <summary>
+    /// Gets or sets token secret.
+    /// </summary>
+    public string TokenSecret { get; set; }
 }

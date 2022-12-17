@@ -3,7 +3,7 @@ namespace Waves.Web.Configuration.Entities;
 /// <summary>
 /// Authentication entity.
 /// </summary>
-public class AuthenticationEntity
+public class Authentication
 {
     /// <summary>
     /// Gets or sets token.
