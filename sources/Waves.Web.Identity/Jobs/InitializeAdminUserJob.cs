@@ -15,9 +15,13 @@ namespace Waves.Web.Identity.Jobs;
 /// <summary>
 /// Initializes admin user job.
 /// </summary>
-/// <typeparam name="T">Type of database context.</typeparam>
-public class InitializeAdminUserJob<T> : BackgroundServiceJobBase
-    where T : WavesIdentityDatabaseContext<T>
+/// <typeparam name="TContext">Context type.</typeparam>
+/// <typeparam name="TUser">Type of user.</typeparam>
+/// <typeparam name="TRole">Type of role.</typeparam>
+public class InitializeAdminUserJob<TContext, TUser, TRole> : BackgroundServiceJobBase
+    where TContext : WavesIdentityDatabaseContext<TContext, TUser, TRole>
+    where TUser : UserEntity
+    where TRole : UserRoleEntity
 {
     private readonly IConfigurationService _configurationService;
 
@@ -28,7 +32,7 @@ public class InitializeAdminUserJob<T> : BackgroundServiceJobBase
     /// <param name="serviceProvider">Service provider.</param>
     /// <param name="configurationService">Configuration.</param>
     public InitializeAdminUserJob(
-        ILogger<InitializeAdminUserJob<T>> logger,
+        ILogger<InitializeAdminUserJob<TContext, TUser, TRole>> logger,
         IServiceProvider serviceProvider,
         IConfigurationService configurationService)
         : base(logger, serviceProvider)
@@ -48,13 +52,13 @@ public class InitializeAdminUserJob<T> : BackgroundServiceJobBase
         {
             await DatabaseInitializationTools.WaitForInitialization(this, scope, Logger, cancellationToken: stoppingToken);
 
-            var context = scope.ServiceProvider.GetRequiredService<T>();
+            var context = scope.ServiceProvider.GetRequiredService<TContext>();
             var users = context.Users;
 
             var adminCredentials = _configurationService.GetCredentialEntity("Admin");
             if (adminCredentials != null)
             {
-                var admin = new UserDbEntity(
+                var admin = new UserEntity(
                     adminCredentials.Username,
                     adminCredentials.Username + "@waves-framework.io",
                     adminCredentials.Password.ToSha256(),

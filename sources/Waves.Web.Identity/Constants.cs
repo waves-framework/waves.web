@@ -8,5 +8,5 @@ public static class Constants
     /// <summary>
     /// Gets database name.
     /// </summary>
-    public const string DatabaseNameKey = "WavesColorsData";
+    public const string DatabaseNameKey = "WavesTradingData";
 }
